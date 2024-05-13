@@ -1,1 +1,133 @@
-
+import java.io.*;
+import java.util.*;
+   
+public class Battleship
+{
+ 
+   public static Scanner input = new Scanner(System.in);
+        
+   public static void setUp(String [][] array) throws IOException
+   {
+      
+      for (int row=0 ; row < 8 ; row++)
+         for(int column=0 ; column <8; column++)
+            array[row][column]= ("~");
+          
+      int horv = (int)(Math.random() * 1 + 0); //1 is vertical while 0 is horizontal
+   
+      if (horv != 1)//horizontal
+      {
+         int row = (int)(Math.random() * 7 + 0);
+         int column = (int)(Math.random() * 4 + 0);
+         array[row][column]= ("S");
+         column= column + 1;
+         array[row][column]= ("S");
+         column= column + 1;
+         array[row][column]= ("S");
+         column= column + 1;
+         array[row][column]= ("S");
+      }
+      else
+      {
+         int row = (int)(Math.random() * 5 + 1); //vertical
+         int column = (int)(Math.random() * 8 + 1);
+         array[row][column]= ("S");
+         row= row+1;
+         array[row][column]= ("S");
+         row= row+1;
+         array[row][column]= ("S");
+         row= row+1;
+         array[row][column]= ("S");
+      
+      }
+         
+           
+         
+       
+   }
+         
+   public static void show(String[][]board)
+   {
+      for(int r=0; r<board.length; r++)
+      {
+         for(int c=0; c< board[0].length; c++)
+         {
+           
+            if (board[r][c].equals("S"))
+            {
+               System.out.print("~ ");
+            }else{
+               System.out.print(board[r][c]+" ");
+            }
+         }
+         System.out.println();
+      }
+   }
+      
+        
+   public static void main(String argv[])throws IOException
+   {
+      
+      String[][] Board= new String [8][8];				
+      setUp(Board);
+      int t = 15; //torpedo #
+      int h= 0; //hits #
+      String misses= "m";
+      String hits= "!"; //hits
+      String Ship= "s";
+          
+      while ( t== 0 || h < 4 )
+      {
+         show(Board);
+         System.out.println("Pick the row to fire on");
+         int r= input.nextInt(); //row
+         System.out.println("Pick the column to fire on");
+         int c= input.nextInt(); //column
+           
+         while (c<0 || c>=Board.length || r<0 || r>=Board.length || Board[r][c].equals("!") || Board[r][c].equals("M"))
+         {
+         
+            System.out.println("The coordinates are  invalid.");
+            System.out.println("Enter a valid value for column.");
+            c= input.nextInt();
+               
+            System.out.println("Enter a valid value for row.");
+            r= input.nextInt();
+         }
+         if(!Board[r][c].equals("S"))
+         {
+            System.out.println("Miss!");
+            Board[r][c] = ("M");
+            t--;
+         }
+         else
+         {
+            System.out.println("Hit!");
+            Board[r][c] = ("!");
+            t--;
+            h++;
+         }
+         if (t==0)
+         {
+            break;
+         }
+         if (h==4)
+         {
+            break;
+         }
+                     
+        
+      }
+      System.out.println("Game over."); 
+      if(t==0 || h<=3)
+      {
+         System.out.println("You lost!");
+      }
+      else
+      {
+         System.out.println("You won!");
+      }
+            
+   }
+            
+}
